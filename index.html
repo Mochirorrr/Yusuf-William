@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yusuf & William — Kelas Rekayasa Perangkat Lunak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0a0a0c;
+    --bg-1:#111114;
+    --bg-2:#17181b;
+    --line:rgba(255,255,255,0.08);
+    --line-soft:rgba(255,255,255,0.05);
+    --ink-0:#f3f2ee;
+    --ink-1:#a8aab0;
+    --ink-2:#6b6d73;
+    --signal:#ff5a36;
+    --signal-dim:rgba(255,90,54,0.14);
+    --circuit:#5fc9ff;
+    --ok:#5be39a;
+    --display:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-0);
+    color:var(--ink-0);
+    font-family:var(--body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
+
+  /* grain overlay */
+  .noise{
+    position:fixed;inset:0;z-index:200;pointer-events:none;
+    opacity:0.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:22px 0;
+    transition:background .4s var(--ease), border-color .4s var(--ease), padding .3s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  .nav.scrolled{
+    background:rgba(10,10,12,0.78);
+    backdrop-filter:blur(16px) saturate(140%);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+  .logo{
+    font-family:var(--mono);font-size:18px;font-weight:600;letter-spacing:-0.02em;
+    color:var(--ink-0);display:flex;align-items:center;gap:2px;
+  }
+  .logo .fn{color:var(--ink-1);}
+  .logo .cursor-blink{
+    display:inline-block;width:7px;height:16px;background:var(--signal);
+    margin-left:6px;animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+
+  .nav-links{display:flex;gap:36px;align-items:center;}
+  .nav-links a{
+    font-size:14px;color:var(--ink-1);font-weight:500;letter-spacing:0.01em;
+    position:relative;transition:color .25s;
+  }
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--signal);
+    transition:width .3s var(--ease);
+  }
+  .nav-links a:hover{color:var(--ink-0);}
+  .nav-links a:hover::after{width:100%;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:600;padding:11px 22px;border-radius:999px;
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .25s, color .25s;
+  }
+  .btn-primary{
+    background:var(--ink-0);color:var(--bg-0);
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 30px -8px rgba(255,90,54,.35);
+    background:var(--signal);color:#fff;
+  }
+  .btn-ghost{
+    border:1px solid var(--line);color:var(--ink-0);
+  }
+  .btn-ghost:hover{border-color:var(--ink-1);background:var(--line-soft);}
+  .nav-cta{display:flex;align-items:center;gap:14px;}
+  .nav-mobile-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;min-height:100vh;display:flex;align-items:center;
+    padding-top:120px;padding-bottom:80px;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 10%, rgba(255,90,54,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 90%, rgba(95,201,255,0.07), transparent 60%),
+      var(--bg-0);
+    overflow:hidden;
+  }
+  .hero-grid-lines{
+    position:absolute;inset:0;z-index:0;opacity:0.5;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 70% 60% at 60% 30%, black 10%, transparent 75%);
+  }
+  .hero-inner{
+    position:relative;z-index:1;display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;align-items:center;width:100%;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--mono);font-size:12px;letter-spacing:0.12em;color:var(--signal);
+    border:1px solid rgba(255,90,54,0.3);background:var(--signal-dim);
+    padding:7px 14px;border-radius:999px;margin-bottom:28px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--signal);animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
+  .hero h1{
+    font-family:var(--display);font-weight:700;
+    font-size:clamp(38px,5.4vw,64px);line-height:1.06;letter-spacing:-0.015em;
+    color:var(--ink-0);
+  }
+  .hero h1 em{font-style:normal;color:var(--signal);}
+  .hero p.lede{
+    margin-top:24px;max-width:480px;font-size:17px;line-height:1.65;color:var(--ink-1);
+  }
+  .hero-actions{margin-top:38px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+  .hero-note{margin-top:16px;font-family:var(--mono);font-size:12px;color:var(--ink-2);}
+
+  .hero-chips{display:flex;gap:10px;margin-top:44px;flex-wrap:wrap;}
+  .chip{
+    font-family:var(--mono);font-size:12px;color:var(--ink-1);
+    border:1px solid var(--line);padding:7px 13px;border-radius:8px;
+    animation:float 5s ease-in-out infinite;background:var(--bg-1);
+  }
+  .chip:nth-child(2){animation-delay:.3s;}
+  .chip:nth-child(3){animation-delay:.6s;}
+  .chip:nth-child(4){animation-delay:.9s;}
+  .chip:nth-child(5){animation-delay:1.2s;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+
+  /* terminal card */
+  .term-stage{perspective:1200px;}
+  .term{
+    background:linear-gradient(165deg,var(--bg-2),var(--bg-1));
+    border:1px solid var(--line);border-radius:16px;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    transform:rotateX(4deg) rotateY(-6deg);
+    transition:transform .2s var(--ease);
+    overflow:hidden;
+  }
+  .term-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 18px;border-bottom:1px solid var(--line);
+  }
+  .term-dots{display:flex;gap:7px;}
+  .term-dots span{width:10px;height:10px;border-radius:50%;background:var(--bg-0);border:1px solid var(--line);}
+  .term-title{font-family:var(--mono);font-size:12px;color:var(--ink-2);}
+  .term-status{
+    font-family:var(--mono);font-size:11px;color:var(--ok);display:flex;align-items:center;gap:6px;
+  }
+  .term-status .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);}
+  .term-body{padding:24px 22px 30px;min-height:280px;}
+  .term-body pre{
+    font-family:var(--mono);font-size:13.5px;line-height:1.9;color:var(--ink-1);white-space:pre-wrap;word-break:break-word;
+  }
+  .tok-kw{color:#c792ea;}
+  .tok-str{color:var(--ok);}
+  .tok-fn{color:var(--circuit);}
+  .tok-cm{color:var(--ink-2);}
+  .tok-pl{color:var(--ink-0);}
+  .term-cursor{display:inline-block;width:8px;height:16px;background:var(--signal);vertical-align:-2px;animation:blink 1s steps(1) infinite;}
+  .term-footer{
+    border-top:1px solid var(--line);padding:14px 22px;display:flex;justify-content:space-between;
+    font-family:var(--mono);font-size:11px;color:var(--ink-2);
+  }
+
+  /* ---------- STATS / MARQUEE ---------- */
+  .stats{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:var(--bg-1);padding:56px 0;
+  }
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;}
+  .stat-num{
+    font-family:var(--display);font-size:clamp(32px,4vw,46px);font-weight:700;color:var(--ink-0);
+    display:flex;align-items:baseline;gap:4px;
+  }
+  .stat-num .unit{font-size:0.5em;color:var(--signal);font-family:var(--mono);}
+  .stat-label{margin-top:8px;font-size:13px;color:var(--ink-2);letter-spacing:0.01em;}
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{padding:140px 0;position:relative;}
+  .section-head{max-width:640px;margin-bottom:72px;}
+  .label{
+    font-family:var(--mono);font-size:12px;letter-spacing:0.12em;color:var(--signal);
+    text-transform:uppercase;margin-bottom:18px;display:block;
+  }
+  .section-head h2{
+    font-family:var(--display);font-size:clamp(30px,4vw,46px);font-weight:700;letter-spacing:-0.015em;line-height:1.12;
+  }
+  .section-head p{margin-top:18px;font-size:16px;color:var(--ink-1);line-height:1.7;max-width:540px;}
+
+  [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease), transform .8s var(--ease);}
+  [data-reveal].is-visible{opacity:1;transform:translateY(0);}
+
+  /* ---------- CURRICULUM ---------- */
+  .module-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .module-tags span{
+    font-family:var(--mono);font-size:11.5px;color:var(--ink-1);
+    border:1px solid var(--line);padding:5px 10px;border-radius:6px;background:var(--bg-1);
+  }
+
+  /* ---------- SCROLL SEQUENCE (pinned, DJI-style) ---------- */
+  .seq-section{padding-bottom:0;}
+  .seq{position:relative;height:380vh;}
+  .seq-sticky{
+    position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;
+    overflow:hidden;padding:96px 0 28px;box-sizing:border-box;
+  }
+  .seq-inner{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;align-items:center;position:relative;
+    overflow:hidden;
+  }
+  .seq-steps{position:relative;min-height:300px;overflow:hidden;}
+  .seq-step{
+    position:absolute;inset:0;opacity:0;will-change:opacity, transform;
+    display:flex;flex-direction:column;justify-content:center;
+    backface-visibility:hidden;
+  }
+  .seq-step-index{
+    font-family:var(--mono);font-size:13px;color:var(--signal);letter-spacing:0.08em;flex-shrink:0;
+  }
+  .seq-step-title{
+    font-family:var(--display);font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-0.01em;
+    margin:14px 0 16px;line-height:1.2;flex-shrink:0;
+    display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .seq-step-desc{
+    font-size:15px;line-height:1.65;color:var(--ink-1);max-width:480px;margin-bottom:18px;flex-shrink:0;
+    display:-webkit-box;line-clamp:3;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .seq-step .module-tags{flex-shrink:0;}
+
+  .seq-visual-wrap{display:flex;justify-content:center;}
+  .seq-visual{
+    position:relative;width:260px;height:260px;border-radius:24px;flex-shrink:0;
+    background:linear-gradient(165deg,var(--bg-2),var(--bg-1));border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.6);
+  }
+  .seq-ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(0deg);}
+  #seqRingFill{transition:stroke-dashoffset .5s var(--ease), stroke .5s var(--ease);}
+  .seq-visual-center{display:flex;flex-direction:column;align-items:center;}
+  .seq-visual-center span{font-family:var(--display);font-size:42px;font-weight:700;color:var(--ink-0);}
+  .seq-visual-center small{font-family:var(--mono);font-size:11px;color:var(--ink-2);letter-spacing:0.1em;margin-top:4px;}
+  .seq-visual-tag{
+    position:absolute;font-family:var(--mono);font-size:11px;color:var(--ink-2);letter-spacing:0.05em;white-space:nowrap;
+  }
+  .seq-visual-tag-top{top:20px;left:50%;transform:translateX(-50%);}
+  .seq-visual-tag-bottom{
+    bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;
+  }
+  .seq-visual-tag-bottom .dot{width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0;}
+
+  .seq-progress{
+    display:flex;justify-content:center;gap:10px;margin-top:28px;flex-shrink:0;
+  }
+  .seq-dot{width:30px;height:3px;border-radius:2px;background:var(--line);transition:background .3s, width .3s;}
+  .seq-dot.active{background:var(--signal);width:48px;}
+
+  .recap-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    margin-top:32px;
+  }
+  .recap-card{
+    background:var(--bg-1);padding:24px 20px;display:flex;flex-direction:column;gap:8px;
+  }
+  .recap-index{font-family:var(--mono);font-size:12px;color:var(--signal);}
+  .recap-title{font-family:var(--display);font-size:16px;font-weight:600;}
+  .recap-weeks{font-family:var(--mono);font-size:12px;color:var(--ink-2);}
+
+  /* ---------- PROCESS ---------- */
+  .process-list{border-top:1px solid var(--line);}
+  .process-row{
+    display:grid;grid-template-columns:140px 1fr 1fr;gap:28px;padding:30px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .process-day{font-family:var(--mono);font-size:13px;color:var(--signal);}
+  .process-title{font-family:var(--display);font-size:18px;font-weight:600;}
+  .process-desc{color:var(--ink-1);font-size:14.5px;line-height:1.65;}
+
+  /* ---------- MENTORS ---------- */
+  .mentor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .mentor-card{
+    background:var(--bg-1);border:1px solid var(--line);border-radius:18px;padding:28px;
+    transition:transform .4s var(--ease), border-color .3s, background .3s;
+  }
+  .mentor-card:hover{transform:translateY(-6px);border-color:rgba(255,90,54,.3);background:var(--bg-2);}
+  .mentor-avatar{
+    width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-weight:700;font-size:18px;color:#fff;margin-bottom:24px;
+  }
+  .mentor-name{font-family:var(--display);font-size:19px;font-weight:600;}
+  .mentor-role{font-size:13px;color:var(--signal);margin-top:4px;font-family:var(--mono);}
+  .mentor-bio{margin-top:14px;font-size:14px;color:var(--ink-1);line-height:1.65;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-wrap{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:80px 0;}
+  .testi-track{position:relative;min-height:220px;}
+  .testi-slide{
+    position:absolute;inset:0;opacity:0;transform:translateX(24px);
+    transition:opacity .6s var(--ease), transform .6s var(--ease);pointer-events:none;
+  }
+  .testi-slide.active{opacity:1;transform:translateX(0);pointer-events:auto;}
+  .testi-quote{font-family:var(--display);font-size:clamp(20px,2.6vw,30px);font-weight:500;line-height:1.45;max-width:760px;}
+  .testi-who{margin-top:28px;display:flex;align-items:center;gap:14px;}
+  .testi-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:13px;color:#fff;}
+  .testi-name{font-size:14px;font-weight:600;}
+  .testi-role{font-size:12.5px;color:var(--ink-2);font-family:var(--mono);}
+  .testi-controls{display:flex;gap:10px;margin-top:48px;}
+  .testi-dot{width:28px;height:3px;border-radius:2px;background:var(--line);transition:background .3s, width .3s;}
+  .testi-dot.active{background:var(--signal);width:44px;}
+
+  /* ---------- PRICING ---------- */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .price-card{
+    background:var(--bg-1);border:1px solid var(--line);border-radius:20px;padding:36px 30px;
+    display:flex;flex-direction:column;transition:transform .4s var(--ease), border-color .3s;
+  }
+  .price-card:hover{transform:translateY(-6px);}
+  .price-card.featured{
+    background:linear-gradient(165deg,var(--bg-2),var(--bg-1));
+    border-color:rgba(255,90,54,.45);position:relative;
+  }
+  .price-card.featured::before{
+    content:'PALING DIPILIH';position:absolute;top:-1px;right:24px;transform:translateY(-50%);
+    font-family:var(--mono);font-size:10.5px;letter-spacing:0.08em;color:#fff;
+    background:var(--signal);padding:5px 12px;border-radius:6px;
+  }
+  .price-tier{font-family:var(--mono);font-size:13px;color:var(--ink-2);letter-spacing:0.05em;}
+  .price-amount{font-family:var(--display);font-size:38px;font-weight:700;margin-top:14px;}
+  .price-amount span{font-size:14px;color:var(--ink-2);font-family:var(--body);font-weight:500;}
+  .price-desc{margin-top:10px;font-size:13.5px;color:var(--ink-1);line-height:1.6;}
+  .price-feats{margin-top:28px;display:flex;flex-direction:column;gap:13px;flex-grow:1;}
+  .price-feats li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--ink-1);}
+  .price-feats svg{width:15px;height:15px;flex-shrink:0;margin-top:2px;color:var(--signal);}
+  .price-card .btn{margin-top:30px;justify-content:center;width:100%;}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{border-top:1px solid var(--line);max-width:760px;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%;display:flex;justify-content:space-between;align-items:center;
+    padding:26px 0;text-align:left;font-family:var(--display);font-size:17px;font-weight:600;
+  }
+  .faq-q .plus{
+    width:22px;height:22px;flex-shrink:0;position:relative;
+  }
+  .faq-q .plus::before,.faq-q .plus::after{
+    content:'';position:absolute;background:var(--ink-1);transition:transform .3s var(--ease), background .3s;
+  }
+  .faq-q .plus::before{width:14px;height:1.5px;top:50%;left:50%;transform:translate(-50%,-50%);}
+  .faq-q .plus::after{width:1.5px;height:14px;top:50%;left:50%;transform:translate(-50%,-50%);}
+  .faq-item.open .plus::after{transform:translate(-50%,-50%) rotate(90deg);}
+  .faq-item.open .plus::before,.faq-item.open .plus::after{background:var(--signal);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease);}
+  .faq-a p{padding-bottom:26px;font-size:14.5px;color:var(--ink-1);line-height:1.7;max-width:620px;}
+
+  /* ---------- FINAL CTA ---------- */
+  .cta-final{
+    text-align:center;background:
+      radial-gradient(ellipse 60% 60% at 50% 0%, rgba(255,90,54,0.12), transparent 70%),
+      var(--bg-0);
+  }
+  .cta-final h2{
+    font-family:var(--display);font-size:clamp(32px,5vw,54px);font-weight:700;letter-spacing:-0.015em;
+    max-width:720px;margin:0 auto;line-height:1.15;
+  }
+  .cta-final p{margin:22px auto 0;color:var(--ink-1);font-size:16px;max-width:480px;}
+  .cta-final .hero-actions{justify-content:center;margin-top:40px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:60px 0 40px;}
+  .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:40px;}
+  .footer-cols{display:flex;gap:64px;}
+  .footer-col h4{font-family:var(--mono);font-size:12px;color:var(--ink-2);letter-spacing:0.08em;margin-bottom:16px;}
+  .footer-col a{display:block;font-size:14px;color:var(--ink-1);margin-bottom:10px;transition:color .2s;}
+  .footer-col a:hover{color:var(--ink-0);}
+  .footer-bottom{
+    margin-top:60px;padding-top:24px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;color:var(--ink-2);font-size:12.5px;font-family:var(--mono);
+    flex-wrap:wrap;gap:12px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .hero-inner{grid-template-columns:1fr;}
+    .term-stage{order:-1;max-width:480px;margin:0 auto;}
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:36px;}
+    .mentor-grid{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .process-row{grid-template-columns:1fr;gap:8px;}
+    .nav-links{display:none;}
+    .seq{height:460vh;}
+    .seq-inner{grid-template-columns:1fr;gap:32px;}
+    .seq-visual-wrap{order:-1;}
+    .seq-visual{width:220px;height:220px;}
+    .seq-visual-center span{font-size:36px;}
+    .seq-steps{min-height:300px;}
+    .recap-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 20px;}
+    section{padding:90px 0;}
+    .footer-cols{gap:32px;flex-wrap:wrap;}
+    .seq{height:520vh;}
+    .seq-step-desc{max-width:none;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    .seq{height:auto;}
+    .seq-sticky{position:relative;height:auto;padding:40px 0;}
+    .seq-step{position:relative;opacity:1 !important;transform:none !important;margin-bottom:48px;}
+    .seq-steps{min-height:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="logo"><span class="fn">Yusuf & William</span>()<span class="cursor-blink"></span></a>
+    <nav class="nav-links">
+      <a href="#kurikulum">Kurikulum</a>
+      <a href="#cara-belajar">Cara Belajar</a>
+      <a href="#mentor">Mentor</a>
+      <a href="#harga">Harga</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#harga" class="btn btn-primary">Mulai Belajar</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-lines"></div>
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> KELAS REKAYASA PERANGKAT LUNAK</div>
+        <h1>Kode yang kamu tulis<br>hari ini, jadi sistem<br>yang <em>dipakai orang</em><br>esok hari.</h1>
+        <p class="lede">Yusuf & William() adalah program intensif 20 minggu untuk membentuk software engineer yang siap dipekerjakan — bukan sekadar bisa menulis kode, tapi bisa membangun dan merawat sistem produksi.</p>
+        <div class="hero-actions">
+          <a href="#harga" class="btn btn-primary">Lihat Program & Harga</a>
+          <a href="#kurikulum" class="btn btn-ghost">Lihat Kurikulum</a>
+        </div>
+        <div class="hero-note">Angkatan berikutnya dibuka terbatas — kuota kelas dijaga kecil agar mentor bisa review code tiap orang.</div>
+        <div class="hero-chips">
+          <span class="chip">JavaScript</span>
+          <span class="chip">React</span>
+          <span class="chip">Node.js</span>
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">System Design</span>
+        </div>
+      </div>
+
+      <div class="term-stage">
+        <div class="term" id="termCard">
+          <div class="term-bar">
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <div class="term-title">final-project.tsx</div>
+            <div class="term-status"><span class="dot"></span>build berhasil</div>
+          </div>
+          <div class="term-body">
+            <pre id="termCode"></pre>
+          </div>
+          <div class="term-footer">
+            <span>node v20 · production</span>
+            <span>0 error · 0 warning</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="wrap stats-grid">
+      <div data-reveal>
+        <div class="stat-num"><span class="counter" data-target="312">0</span><span class="unit">org</span></div>
+        <div class="stat-label">alumni telah lulus program</div>
+      </div>
+      <div data-reveal>
+        <div class="stat-num"><span class="counter" data-target="20">0</span><span class="unit">mgg</span></div>
+        <div class="stat-label">durasi total kelas intensif</div>
+      </div>
+      <div data-reveal>
+        <div class="stat-num"><span class="counter" data-target="87">0</span><span class="unit">%</span></div>
+        <div class="stat-label">menyelesaikan capstone tepat waktu</div>
+      </div>
+      <div data-reveal>
+        <div class="stat-num"><span class="counter" data-target="6">0</span><span class="unit">org</span></div>
+        <div class="stat-label">maksimum mentee per mentor</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURRICULUM -->
+  <section id="kurikulum" class="seq-section">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label">Kurikulum</span>
+        <h2>Empat modul, satu arah: siap produksi.</h2>
+        <p>Scroll untuk menelusuri tiap modul — setiap satu dibangun di atas modul sebelumnya, tidak ada yang berdiri sendiri.</p>
+      </div>
+    </div>
+
+    <div class="seq" id="curriculumSeq">
+      <div class="seq-sticky">
+        <div class="wrap seq-inner">
+          <div class="seq-steps">
+            <div class="seq-step">
+              <span class="seq-step-index">01 / 04</span>
+              <h3 class="seq-step-title">Fondasi: Logika &amp; Struktur Data</h3>
+              <p class="seq-step-desc">Membangun cara berpikir sebelum cara menulis. Kamu akan memecah masalah jadi langkah logis, memahami kompleksitas algoritma, dan membiasakan diri dengan Git sebagai cara kerja, bukan sekadar tools.</p>
+              <div class="module-tags"><span>Algoritma</span><span>Struktur Data</span><span>Git & GitHub</span><span>CLI</span></div>
+            </div>
+            <div class="seq-step">
+              <span class="seq-step-index">02 / 04</span>
+              <h3 class="seq-step-title">Rekayasa Frontend</h3>
+              <p class="seq-step-desc">Dari HTML semantik sampai aplikasi React dengan state management yang rapi. Fokus pada performa, accessibility, dan kebiasaan menulis komponen yang bisa dibaca tim lain — bukan cuma kamu.</p>
+              <div class="module-tags"><span>HTML/CSS Modern</span><span>JavaScript ES6+</span><span>React</span><span>State Management</span></div>
+            </div>
+            <div class="seq-step">
+              <span class="seq-step-index">03 / 04</span>
+              <h3 class="seq-step-title">Rekayasa Backend &amp; Sistem</h3>
+              <p class="seq-step-desc">Merancang API yang tahan beban, basis data yang ternormalisasi dengan benar, autentikasi yang aman, dan dasar system design — bagaimana sistem kecil tetap waras saat penggunanya bertambah seribu kali.</p>
+              <div class="module-tags"><span>Node.js</span><span>PostgreSQL</span><span>REST & GraphQL</span><span>Auth & Security</span></div>
+            </div>
+            <div class="seq-step">
+              <span class="seq-step-index">04 / 04</span>
+              <h3 class="seq-step-title">Proyek Produksi (Capstone)</h3>
+              <p class="seq-step-desc">Membangun satu produk nyata dari nol bersama mentor industri, lewat code review mingguan layaknya tim engineering sungguhan. Selesai dengan deployment ke production dan portofolio yang bisa dipertanggungjawabkan di interview.</p>
+              <div class="module-tags"><span>Code Review</span><span>CI/CD</span><span>Portofolio</span><span>Simulasi Interview</span></div>
+            </div>
+          </div>
+
+          <div class="seq-visual-wrap">
+            <div class="seq-visual">
+              <svg viewBox="0 0 140 140" class="seq-ring">
+                <circle cx="70" cy="70" r="58" fill="none" stroke="var(--line)" stroke-width="6"></circle>
+                <circle id="seqRingFill" cx="70" cy="70" r="58" fill="none" stroke="var(--signal)" stroke-width="6" stroke-linecap="round" transform="rotate(-90 70 70)"></circle>
+              </svg>
+              <div class="seq-visual-center">
+                <span id="seqVisualWeeks">4</span>
+                <small>MINGGU</small>
+              </div>
+              <div class="seq-visual-tag seq-visual-tag-top">MODUL <span id="seqVisualIndex">01</span></div>
+              <div class="seq-visual-tag seq-visual-tag-bottom"><span class="dot"></span> dari 20 minggu total</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="seq-progress" id="seqProgress"></div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="recap-grid" data-reveal>
+        <div class="recap-card"><span class="recap-index">01</span><span class="recap-title">Fondasi</span><span class="recap-weeks">4 minggu</span></div>
+        <div class="recap-card"><span class="recap-index">02</span><span class="recap-title">Frontend</span><span class="recap-weeks">6 minggu</span></div>
+        <div class="recap-card"><span class="recap-index">03</span><span class="recap-title">Backend &amp; Sistem</span><span class="recap-weeks">6 minggu</span></div>
+        <div class="recap-card"><span class="recap-index">04</span><span class="recap-title">Capstone</span><span class="recap-weeks">4 minggu</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="cara-belajar" style="background:var(--bg-1);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label">Cara Belajar</span>
+        <h2>Ritme mingguan yang realistis untuk yang masih bekerja.</h2>
+        <p>Sebagian besar peserta kami menjalani program ini sambil tetap kerja kantoran. Jadwalnya dirancang untuk itu.</p>
+      </div>
+      <div class="process-list" data-reveal>
+        <div class="process-row">
+          <div class="process-day">Senin–Kamis</div>
+          <div class="process-title">Live class malam, 19.30–21.30</div>
+          <div class="process-desc">Sesi interaktif dengan mentor, bukan rekaman. Pertanyaan dijawab langsung, bukan ditampung di forum.</div>
+        </div>
+        <div class="process-row">
+          <div class="process-day">Jumat</div>
+          <div class="process-title">Code review mingguan</div>
+          <div class="process-desc">Setiap baris kode yang kamu kirim dibaca dan dikomentari mentor — bukan dinilai pakai skor otomatis.</div>
+        </div>
+        <div class="process-row">
+          <div class="process-day">Sabtu</div>
+          <div class="process-title">Project lab bersama</div>
+          <div class="process-desc">Mengerjakan proyek modul secara langsung dengan teman satu kelas, ditemani mentor di ruangan yang sama (virtual).</div>
+        </div>
+        <div class="process-row">
+          <div class="process-day">Dua mingguan</div>
+          <div class="process-title">Sesi 1-on-1 dengan mentor</div>
+          <div class="process-desc">Membahas progres personal, kendala teknis spesifik, dan arah karier setelah lulus.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENTORS -->
+  <section id="mentor">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label">Mentor</span>
+        <h2>Diajar oleh orang yang masih aktif membangun sistem.</h2>
+        <p>Bukan trainer purna waktu. Mentor kami adalah engineer yang kerjaannya sehari-hari adalah menulis dan merawat kode produksi.</p>
+      </div>
+      <div class="mentor-grid" data-reveal>
+        <div class="mentor-card">
+          <div class="mentor-avatar" style="background:linear-gradient(135deg,#ff5a36,#c92e0f);">RP</div>
+          <div class="mentor-name">Muhammad Yusuf</div>
+          <div class="mentor-role">Front-end, Back-end & UI/UX</div>
+          <div class="mentor-bio">3 Tahun Berpengalaman Dalam Bidangnya</div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-avatar" style="background:linear-gradient(135deg,#5fc9ff,#1f6fa8);">DA</div>
+          <div class="mentor-name">William Wijaya</div>
+          <div class="mentor-role">Front-end, Back-end & UI/UX</div>
+          <div class="mentor-bio">3 Tahun Berpengalaman Dalam Bidangnya</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi-wrap" style="background:var(--bg-1);">
+    <div class="wrap">
+      <span class="label" data-reveal>Cerita Alumni</span>
+      <div class="testi-track" data-reveal>
+        <div class="testi-slide active">
+          <p class="testi-quote">"Yang paling beda dari kelas lain: mentor benar-benar baca kode saya satu per satu, bukan cuma kasih sertifikat di akhir."</p>
+          <div class="testi-who">
+            <div class="testi-avatar" style="background:#ff5a36;">SN</div>
+            <div><div class="testi-name">Salsabila Nuraini</div><div class="testi-role">Frontend Engineer</div></div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <p class="testi-quote">"Saya kerja full time waktu ikut kelas ini. Jadwalnya masuk akal, dan progressnya kerasa tiap minggu, bukan cuma di akhir."</p>
+          <div class="testi-who">
+            <div class="testi-avatar" style="background:#5fc9ff;">AF</div>
+            <div><div class="testi-name">Ahmad Fadillah</div><div class="testi-role">Backend Engineer</div></div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <p class="testi-quote">"Capstone project saya jadi portofolio yang benar-benar saya pahami luar dalam — karena saya yang debug semuanya sendiri, ditemani mentor."</p>
+          <div class="testi-who">
+            <div class="testi-avatar" style="background:#5be39a;">RH</div>
+            <div><div class="testi-name">Rangga Hidayat</div><div class="testi-role">Software Engineer</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-controls" id="testiDots"></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="harga">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label">Investasi</span>
+        <h2>Pilih intensitas belajar yang sesuai kapasitasmu.</h2>
+        <p>Tiga jalur, satu kurikulum yang sama. Bedanya ada di seberapa dekat kamu dengan mentor.</p>
+      </div>
+      <div class="pricing-grid" data-reveal>
+        <div class="price-card">
+          <div class="price-tier">SELF-PACED</div>
+          <div class="price-amount">Rp 2.500.000<span>/program</span></div>
+          <div class="price-desc">Akses penuh materi dan rekaman kelas, jalan dengan ritme sendiri.</div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Akses seumur hidup ke materi</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Forum diskusi alumni</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> 1x code review per modul</li>
+          </ul>
+          <a href="#" class="btn btn-ghost">Pilih Self-Paced</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-tier">LIVE COHORT</div>
+          <div class="price-amount">Rp 7.900.000<span>/program</span></div>
+          <div class="price-desc">Kelas langsung berjadwal, lengkap dengan project lab dan code review mingguan.</div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Live class 4x/minggu</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Code review tiap minggu</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> 1-on-1 mentoring dua mingguan</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Capstone bersama mentor industri</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Pilih Live Cohort</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">PRIVATE MENTORSHIP</div>
+          <div class="price-amount">Rp 15.900.000<span>/program</span></div>
+          <div class="price-desc">Semua yang ada di Live Cohort, dengan mentor pribadi yang sama dari awal sampai capstone.</div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Mentor pribadi tetap</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> 1-on-1 mingguan</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Review persiapan interview</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Akses langsung WA mentor</li>
+          </ul>
+          <a href="#" class="btn btn-ghost">Pilih Private Mentorship</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background:var(--bg-1);border-top:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label">FAQ</span>
+        <h2>Pertanyaan yang paling sering ditanyakan.</h2>
+      </div>
+      <div class="faq-list" data-reveal>
+        <div class="faq-item">
+          <button class="faq-q"><span>Apakah saya perlu pengalaman coding sebelumnya?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Tidak. Modul 01 dirancang dari nol. Yang dibutuhkan hanya komitmen waktu, bukan latar belakang teknis.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Bagaimana kalau saya masih kerja kantoran penuh waktu?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Program ini memang dirancang untuk itu. Live class diadakan malam hari, dan tugas mingguan dirancang agar bisa dikerjakan di luar jam kantor.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Apakah ada jaminan langsung kerja setelah lulus?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Kami tidak menjual jaminan kerja, karena itu di luar kendali kami. Yang kami jamin adalah portofolio nyata, simulasi interview, dan jaringan mentor industri yang aktif membantu proses pencarian kerja.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Apa metode pembayaran yang tersedia?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Transfer bank, kartu kredit, dan cicilan 3–6 bulan tanpa bunga untuk semua jalur kelas.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Berapa ukuran kelas per angkatan?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Maksimum 36 peserta per angkatan, dibagi ke grup kecil 6 orang per mentor agar review kode tetap personal.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-final">
+    <div class="wrap">
+      <span class="label" data-reveal style="display:inline-block;">Mulai Sekarang</span>
+      <h2 data-reveal>Angkatan berikutnya dibuka dengan kuota terbatas.</h2>
+      <p data-reveal>Daftar sebelum kuota penuh — kami menjaga rasio mentor-mentee tetap kecil di setiap angkatan.</p>
+      <div class="hero-actions" data-reveal>
+        <a href="#harga" class="btn btn-primary">Daftar Angkatan Berikutnya</a>
+        <a href="#kurikulum" class="btn btn-ghost">Tinjau Kurikulum Lagi</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <a href="#" class="logo"><span class="fn">Yusuf & William</span>()<span class="cursor-blink"></span></a>
+        <p style="margin-top:16px;color:var(--ink-2);font-size:13.5px;max-width:240px;line-height:1.6;">Kelas rekayasa perangkat lunak untuk yang serius membangun karier sebagai engineer.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>PROGRAM</h4>
+          <a href="#kurikulum">Kurikulum</a>
+          <a href="#cara-belajar">Cara Belajar</a>
+          <a href="#harga">Harga</a>
+        </div>
+        <div class="footer-col">
+          <h4>KONTAK</h4>
+          <a href="mailto:Yusuf & William@Ygmail.com">Yusuf & William@gmail.com</a>
+          <a href="tel:+622150001234">08123456789</a>
+        </div>
+        <div class="footer-col">
+          <h4>IKUTI</h4>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Yusuf & William(). Seluruh hak dilindungi.</span>
+      <span>Palembang, Indonesia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- Globals ----
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+
+  // ---- NAV scroll state ----
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // ---- Hero scroll-fade (DJI-style exit transition) ----
+  (function initHeroFade(){
+    const heroInner = document.querySelector('.hero-inner');
+    const heroGrid = document.querySelector('.hero-grid-lines');
+    if(!heroInner || prefersReduced) return;
+    function update(){
+      const p = clamp(window.scrollY / (window.innerHeight * 0.85), 0, 1);
+      heroInner.style.opacity = 1 - p;
+      heroInner.style.transform = `translateY(${p * 50}px) scale(${1 - p * 0.05})`;
+      if(heroGrid) heroGrid.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+
+  // ---- Curriculum pinned scroll-sequence (DJI-style) ----
+  (function initCurriculumSeq(){
+    const seq = document.getElementById('curriculumSeq');
+    if(!seq) return;
+    const steps = seq.querySelectorAll('.seq-step');
+    const progressWrap = document.getElementById('seqProgress');
+    const ringFill = document.getElementById('seqRingFill');
+    const visualWeeks = document.getElementById('seqVisualWeeks');
+    const visualIndex = document.getElementById('seqVisualIndex');
+    const total = steps.length;
+    const circumference = 2 * Math.PI * 58;
+
+    const moduleData = [
+      { weeks: 4 }, { weeks: 6 }, { weeks: 6 }, { weeks: 4 }
+    ];
+    const totalWeeks = moduleData.reduce((s, m) => s + m.weeks, 0);
+
+    progressWrap.innerHTML = '';
+    steps.forEach(() => {
+      const d = document.createElement('span');
+      d.className = 'seq-dot';
+      progressWrap.appendChild(d);
+    });
+    const dots = progressWrap.querySelectorAll('.seq-dot');
+
+    if(prefersReduced){
+      steps.forEach(s => { s.style.opacity = 1; s.style.position = 'relative'; });
+      return;
+    }
+
+    function update(){
+      const rect = seq.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
+      const progress = clamp(-rect.top / scrollable, 0, 1);
+      const raw = progress * total;
+      const active = Math.min(total - 1, Math.floor(raw + 0.0001));
+
+      steps.forEach((step, i) => {
+        const local = raw - i;
+        const opacity = clamp(1 - Math.abs(local) * 1.6, 0, 1);
+        const translate = clamp(local, -1, 1) * 36;
+        step.style.opacity = opacity;
+        step.style.transform = `translateY(${translate}px)`;
+        step.style.zIndex = opacity > 0.5 ? 2 : 1;
+      });
+
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+
+      const m = moduleData[active];
+      if(ringFill){
+        const pct = m.weeks / totalWeeks * 4; // visual emphasis within ring
+        const offset = circumference * (1 - clamp(pct, 0.12, 1));
+        ringFill.style.strokeDasharray = `${circumference}`;
+        ringFill.style.strokeDashoffset = `${offset}`;
+      }
+      if(visualWeeks) visualWeeks.textContent = m.weeks;
+      if(visualIndex) visualIndex.textContent = String(active + 1).padStart(2, '0');
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // ---- Scroll reveal ----
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---- Counter animation ----
+  const counters = document.querySelectorAll('.counter');
+  const counterIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        const el = e.target;
+        const target = parseInt(el.dataset.target, 10);
+        const dur = 1400;
+        const start = performance.now();
+        function tick(now){
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(eased * target);
+          if(p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        counterIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(el => counterIO.observe(el));
+
+  // ---- FAQ accordion ----
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(other => {
+        other.classList.remove('open');
+        other.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // ---- Testimonial carousel ----
+  const slides = document.querySelectorAll('.testi-slide');
+  const dotsWrap = document.getElementById('testiDots');
+  let activeSlide = 0;
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'testi-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goToSlide(i));
+    dotsWrap.appendChild(d);
+  });
+  function goToSlide(i){
+    slides[activeSlide].classList.remove('active');
+    dotsWrap.children[activeSlide].classList.remove('active');
+    activeSlide = i;
+    slides[activeSlide].classList.add('active');
+    dotsWrap.children[activeSlide].classList.add('active');
+  }
+  setInterval(() => {
+    goToSlide((activeSlide + 1) % slides.length);
+  }, 5000);
+
+  // ---- Hero terminal tilt (mouse parallax) ----
+  const termCard = document.getElementById('termCard');
+  const termStage = document.querySelector('.term-stage');
+  if(termStage && !prefersReduced){
+    termStage.addEventListener('mousemove', (e) => {
+      const rect = termStage.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      termCard.style.transform = `rotateX(${4 - y * 10}deg) rotateY(${-6 + x * 14}deg)`;
+    });
+    termStage.addEventListener('mouseleave', () => {
+      termCard.style.transform = 'rotateX(4deg) rotateY(-6deg)';
+    });
+  }
+
+  // ---- Typing code animation ----
+  const codeLines = [
+    "import { createClass } from 'Yusuf & William';",
+    "",
+    "export function FinalProject() {",
+    "  const skills = useSkills();",
+    "  const system = build(skills);",
+    "",
+    "  return deploy(system, {",
+    "    target: 'production',",
+    "    reviewedBy: 'mentor',",
+    "  });",
+    "}",
+    "",
+    "// status: siap dipakai pengguna nyata"
+  ];
+
+  function highlight(line){
+    let html = line
+      .replace(/(&)/g,'&amp;').replace(/(<)/g,'&lt;')
+      .replace(/(import|export|function|const|return)/g, '<span class="tok-kw">$1</span>')
+      .replace(/('.*?')/g, '<span class="tok-str">$1</span>')
+      .replace(/(createClass|useSkills|build|deploy)(?=\()/g, '<span class="tok-fn">$1</span>')
+      .replace(/(\/\/.*)/g, '<span class="tok-cm">$1</span>');
+    return html;
+  }
+
+  const termCode = document.getElementById('termCode');
+  let typeTimeout;
+
+  function typeLoop(){
+    termCode.innerHTML = '';
+    let li = 0, ci = 0;
+    let rendered = [];
+
+    function step(){
+      if(li >= codeLines.length){
+        // hold, then restart
+        typeTimeout = setTimeout(() => { typeLoop(); }, 2600);
+        return;
+      }
+      const currentLine = codeLines[li];
+      if(ci <= currentLine.length){
+        const partial = currentLine.slice(0, ci);
+        const displayLines = rendered.concat([partial]);
+        termCode.innerHTML = displayLines.map((l,i) => {
+          const isLast = i === displayLines.length - 1;
+          return highlight(l) + (isLast ? '<span class="term-cursor"></span>' : '');
+        }).join('\n');
+        ci++;
+        typeTimeout = setTimeout(step, prefersReduced ? 0 : (14 + Math.random() * 22));
+      } else {
+        rendered.push(currentLine);
+        li++; ci = 0;
+        typeTimeout = setTimeout(step, prefersReduced ? 0 : 80);
+      }
+    }
+    step();
+  }
+  typeLoop();
+</script>
+
+</body>
+</html>
