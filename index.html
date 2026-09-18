@@ -2,9 +2,9 @@
 <html lang="id" class="smooth-scroll">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<title>Ngoding Bareng — Kelas Rekayasa Perangkat Lunak</title>
-<meta name="description" content="Program intensif rekayasa perangkat lunak profesional. Bangun karir sebagai software engineer bersama mentor industri.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes">
+<title>Ngoding Bareng — Kelas HTML & CSS</title>
+<meta name="description" content="Kelas HTML & CSS dengan pembelajaran terstruktur, praktik langsung, dan proyek website.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,11 +32,9 @@
     --border-subtle: rgba(255, 255, 255, 0.08);
     --border-active: rgba(255, 255, 255, 0.2);
     
-    /* Gradients */
     --grad-mesh: radial-gradient(circle at 10% 20%, rgba(255, 78, 84, 0.15) 0%, transparent 50%),
                   radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
     
-    /* Typography */
     --font-display: 'Outfit', sans-serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
     --font-code: 'Fira Code', monospace;
@@ -57,6 +55,8 @@
     -webkit-font-smoothing: antialiased;
     background-image: var(--grad-mesh);
     background-attachment: fixed;
+    min-width: 320px; 
+    width: 100%;
   }
 
   a { text-decoration: none; color: inherit; transition: color 0.2s; }
@@ -66,18 +66,13 @@
 
   /* --- UTILITIES --- */
   .wrap {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 clamp(20px, 5vw, 40px);
+    padding: 0 24px;
     position: relative;
     z-index: 2;
-  }
-  
-  .text-gradient {
-    background: linear-gradient(135deg, #fff 0%, #d1d1d1 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    min-width: 300px; 
   }
   
   .text-gradient-primary {
@@ -100,6 +95,7 @@
     padding: 20px 0;
     transition: all 0.3s var(--ease-smooth);
     border-bottom: 1px solid transparent;
+    min-width: 320px;
   }
   .nav.scrolled {
     background: rgba(5, 5, 7, 0.95);
@@ -117,6 +113,7 @@
     color: var(--text-main);
     display: flex; align-items: center; gap: 6px;
     flex-shrink: 0;
+    min-width: fit-content;
   }
   .logo span.highlight { color: var(--primary); }
   .cursor {
@@ -125,7 +122,7 @@
     display: inline-block; vertical-align: middle; margin-left: 4px;
   }
 
-  .nav-links { display: flex; gap: 32px; }
+  .nav-links { display: none; gap: 24px; }
   .nav-links a {
     font-size: 0.9rem; font-weight: 500; color: var(--text-muted);
     position: relative; white-space: nowrap;
@@ -140,10 +137,11 @@
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 12px 28px; border-radius: 50px;
+    padding: 12px 24px; border-radius: 50px;
     font-weight: 600; font-size: 0.9rem;
     transition: transform 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
     text-align: center;
+    white-space: nowrap;
   }
   .btn:active { transform: scale(0.96); }
   .btn-primary {
@@ -161,7 +159,7 @@
 
   .nav-cta { display: flex; gap: 12px; align-items: center; }
   
-  .hamburger { display: none; width: 30px; height: 20px; position: relative; z-index: 102; }
+  .hamburger { display: block; width: 30px; height: 20px; position: relative; z-index: 102; flex-shrink: 0; }
   .hamburger span {
     position: absolute; width: 100%; height: 2px; background: #fff; left: 0;
     transition: 0.3s;
@@ -185,18 +183,19 @@
   .hero-blob {
     position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; z-index: 0;
     animation: floatBlob 12s infinite alternate ease-in-out;
+    max-width: 500px; 
   }
   .blob-1 { width: 400px; height: 400px; background: var(--primary); top: -100px; right: -100px; }
   .blob-2 { width: 300px; height: 300px; background: var(--accent); bottom: 10%; left: -50px; animation-delay: -6s; }
 
   .hero-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
+    grid-template-columns: 1fr;
+    gap: 40px;
     align-items: center;
   }
 
-  .hero-content { z-index: 1; }
+  .hero-content { z-index: 1; text-align: center; }
   
   .badge {
     display: inline-flex; align-items: center; gap: 8px;
@@ -211,7 +210,7 @@
 
   h1 {
     font-family: var(--font-display);
-    font-size: clamp(2.2rem, 5vw, 3.5rem); 
+    font-size: clamp(2rem, 5vw, 3.5rem); 
     line-height: 1.1;
     font-weight: 700;
     margin-bottom: 24px;
@@ -222,18 +221,22 @@
     font-size: clamp(1rem, 2vw, 1.15rem);
     color: var(--text-muted);
     margin-bottom: 32px;
-    max-width: 550px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
     line-height: 1.7;
   }
 
-  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
   .hero-actions .btn { flex: 1; min-width: 140px; }
 
-  /* Hero Terminal Animation - Mobile Optimized */
+  /* Hero Terminal Animation */
   .terminal-wrapper {
     perspective: 1000px;
     margin-top: 0;
-    order: 2; 
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
   }
   .terminal-card {
     background: rgba(22, 24, 29, 0.8);
@@ -241,10 +244,7 @@
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;
-    transform: rotateY(-6deg) rotateX(2deg);
-    transition: transform 0.5s ease-out;
     overflow: hidden;
-    animation: floatCard 8s ease-in-out infinite;
   }
   .term-header {
     background: rgba(0,0,0,0.3);
@@ -257,10 +257,10 @@
   .td-1 { background: #FF5F56; } .td-2 { background: #FFBD2E; } .td-3 { background: #27C93F; }
   
   .term-body {
-    padding: clamp(20px, 4vw, 30px);
+    padding: 20px;
     font-family: var(--font-code);
-    font-size: clamp(0.8rem, 1.6vw, 0.95rem);
-    min-height: 300px;
+    font-size: 0.85rem;
+    min-height: 250px;
   }
   .code-line { display: flex; margin-bottom: 6px; opacity: 0; animation: fadeInCode 0.3s forwards; }
   .ln { width: 30px; color: var(--text-dim); user-select: none; text-align: right; margin-right: 16px; flex-shrink: 0; }
@@ -280,7 +280,7 @@
     position: relative; z-index: 2;
   }
   .stats-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
   }
   .stat-item { text-align: center; }
   .stat-num { 
@@ -292,8 +292,8 @@
   .stat-label { font-size: 0.85rem; color: var(--text-muted); }
 
   /* --- SECTIONS GENERAL --- */
-  section { padding: 80px 0; position: relative; }
-  .section-header { margin-bottom: 60px; max-width: 700px; }
+  section { padding: 60px 0; position: relative; }
+  .section-header { margin-bottom: 40px; max-width: 700px; }
   .section-tag {
     font-family: var(--font-code); color: var(--primary); font-size: 0.8rem;
     text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: block;
@@ -301,36 +301,42 @@
   .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: 16px; }
   .section-desc { color: var(--text-muted); font-size: clamp(0.95rem, 2vw, 1.1rem); line-height: 1.7; }
 
-  /* --- CURRICULUM SCROLL SEQUENCE (FIXED LAYOUT) --- */
-  /* Container di mobile normal, di desktop tinggi scroll */
+  /* --- CURRICULUM (FIXED & INTERACTIVE) --- */
+  
   .sticky-container {
-    height: auto; 
     position: relative;
+    height: auto;
   }
 
   .sticky-content {
-    display: grid; 
-    /* Desktop: Kiri (Menu) | Kanan (Visual + Detail) */
-    grid-template-columns: 1fr 1.2fr; 
-    gap: 40px;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
   }
 
-  /* BAGIAN KIRI: MENU MODUL (Desktop) */
+  /* 1. NAVIGASI MODUL (Shared for Mobile & Desktop) */
   .module-nav {
-    display: flex; flex-direction: column; gap: 16px;
-    /* Sticky di desktop */
-    position: relative; 
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 10px;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;  
+    position: relative;
+    z-index: 10;
   }
-  
+  .module-nav::-webkit-scrollbar { display: none; }
+
   .module-tab {
-    padding: 20px;
-    border-radius: 12px;
+    padding: 16px 24px;
+    border-radius: 50px; 
     border: 1px solid var(--border-subtle);
     background: var(--bg-card);
     cursor: pointer;
     transition: 0.3s;
-    display: flex; align-items: center; gap: 16px;
+    display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0; 
+    min-width: 180px;
   }
   .module-tab:hover {
     background: #1e2026;
@@ -342,50 +348,51 @@
   }
   .m-tab-num {
     font-family: var(--font-display);
-    font-size: 1.5rem; font-weight: 700; color: var(--text-dim);
-    min-width: 40px; text-align: center;
+    font-size: 1.2rem; font-weight: 700; color: var(--text-dim);
+    min-width: 30px; text-align: center;
     transition: 0.3s;
   }
   .module-tab.active .m-tab-num { color: var(--primary); }
   .m-tab-info h4 {
-    font-size: 1rem; font-weight: 600; margin-bottom: 4px; color: var(--text-main);
+    font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; color: var(--text-main);
   }
   .m-tab-info p {
-    font-size: 0.8rem; color: var(--text-muted); margin: 0;
+    font-size: 0.75rem; color: var(--text-muted); margin: 0;
+    display: none; 
   }
 
-  /* BAGIAN KANAN: DETAIL MODUL & VISUAL (Desktop) */
+  /* 2. STAGE KONTEN (Detail + Visual) */
   .module-stage {
     position: relative;
-    /* Sticky di desktop */
-    height: 100%;
-    display: flex; flex-direction: column; gap: 32px;
+    min-height: 500px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
   }
 
-  /* Card Detail Konten */
   .module-item {
-    /* Di desktop absolute untuk fade effect */
-    position: absolute; 
+    position: absolute;
     top: 0; left: 0; width: 100%;
     opacity: 0; 
-    transform: translateY(20px);
+    transform: translateY(20px) scale(0.95);
     transition: all 0.5s var(--ease-smooth);
     pointer-events: none;
+    display: flex; flex-direction: column; gap: 32px;
   }
   .module-item.active { 
     opacity: 1; 
-    transform: translateY(0); 
+    transform: translateY(0) scale(1);
     pointer-events: auto;
-    position: relative; /* Kembalikan ke relative jika active agar tidak overlap aneh */
+    position: relative; 
+    z-index: 2;
   }
 
   .m-card {
     background: var(--bg-card); border: 1px solid var(--border-subtle);
-    padding: 32px; border-radius: 20px;
+    padding: 28px; border-radius: 20px;
     position: relative; overflow: hidden;
-    margin-bottom: 24px; /* Jarak dengan visual di bawahnya */
+    margin-bottom: 0;
   }
-  .m-card:hover { border-color: var(--border-active); background: #1a1d24; }
   .m-card::before {
     content:''; position: absolute; top:0; left:0; width: 4px; height: 100%;
     background: var(--primary); opacity: 0; transition: 0.3s;
@@ -397,11 +404,11 @@
     font-weight: 600; letter-spacing: 0.05em; margin-bottom: 8px; display: block;
   }
   .m-title { 
-    font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2rem); 
+    font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2rem); 
     margin: 8px 0 16px; font-weight: 700; line-height: 1.2; 
   }
   .m-desc { 
-    color: var(--text-muted); font-size: clamp(0.95rem, 1.5vw, 1rem); 
+    color: var(--text-muted); font-size: 0.95rem; 
     line-height: 1.6; margin-bottom: 20px;
   }
   .m-tags { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -411,13 +418,14 @@
     font-family: var(--font-code);
   }
 
-  /* Visual Stage - Berada di dalam Module Stage (Kanan Bawah) */
+  /* 3. VISUAL STAGE (Lingkaran) */
   .visual-stage {
     display: flex; justify-content: center; align-items: center; position: relative;
-    /* Pastikan visual tetap terlihat */
     min-height: 300px;
+    width: 100%;
+    order: 2; 
   }
-  .progress-circle { width: 260px; height: 260px; position: relative; }
+  .progress-circle { width: 260px; height: 260px; position: relative; flex-shrink: 0; }
   .pc-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
   .pc-bg { fill: none; stroke: var(--border-subtle); stroke-width: 8; }
   .pc-fill {
@@ -431,7 +439,6 @@
   }
   .pc-number { font-size: 4.5rem; font-weight: 800; font-family: var(--font-display); line-height: 1; color: var(--text-main); }
   .pc-label { font-size: 0.9rem; color: var(--text-muted); font-family: var(--font-code); letter-spacing: 0.2em; margin-top: 8px; }
-
 
   /* --- PRICING --- */
   .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
@@ -502,7 +509,7 @@
 
   /* --- FOOTER --- */
   footer { border-top: 1px solid var(--border-subtle); padding: 60px 0 40px; background: #020203; font-size: 0.9rem; color: var(--text-muted); }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 40px; }
   .footer-links li { margin-bottom: 12px; }
   .footer-links a:hover { color: var(--primary); }
   .socials { display: flex; gap: 16px; margin-top: 20px; }
@@ -513,73 +520,101 @@
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
   @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
   @keyframes floatBlob { from { transform: translate(0, 0) scale(1); } to { transform: translate(30px, -30px) scale(1.1); } }
-  @keyframes floatCard { 0%, 100% { transform: rotateY(-6deg) rotateX(2deg) translateY(0); } 50% { transform: rotateY(-6deg) rotateX(2deg) translateY(-15px); } }
   @keyframes fadeInCode { to { opacity: 1; } }
+  @keyframes floatCard { 0%, 100% { transform: rotateY(-6deg) rotateX(2deg) translateY(0); } 50% { transform: rotateY(-6deg) rotateX(2deg) translateY(-15px); } }
 
-  /* --- RESPONSIVE LOGIC (PENTING) --- */
-  
-  /* Desktop Styling untuk Split Screen */
+  /* --- RESPONSIVE: DESKTOP FIX (UPDATED) --- */
   @media (min-width: 981px) {
-    .sticky-container { height: 300vh; } /* Area scroll panjang */
-    .sticky-content {
-      position: sticky; top: 100px; /* Ditempel di atas layar */
-      height: 80vh; /* Tinggi area viewport */
-    }
-    .module-nav {
-      position: sticky; 
-      top: 100px;
-      height: 80vh;
-      overflow-y: auto; /* Scroll jika menu kebanyakan */
-      padding-right: 10px;
-    }
-    .module-stage {
-      position: sticky;
-      top: 100px;
-    }
-  }
-
-  /* Mobile Styling: Stack Vertikal */
-  @media (max-width: 980px) {
-    .nav-links, .nav-cta .btn { display: none; }
-    .hamburger { display: block; }
+    .wrap { padding: 0 40px; }
     
-    .sticky-container { height: auto; }
-    .sticky-content {
-      position: relative;
-      grid-template-columns: 1fr; /* 1 kolom */
-      gap: 24px;
-    }
-
-    /* Di Mobile Menu Navigasi Modul disembunyikan (opsional) atau dibuat horizontal */
-    .module-nav {
-      order: 1; /* Menu di atas */
-      display: none; /* Disembunyikan agar mobile bersih, modul tampil biasa ke bawah */
-    }
+    /* 1. Hero Grid */
+    .hero-grid { grid-template-columns: 1fr 1fr; text-align: left; }
+    .hero-content { text-align: left; }
+    .hero p { margin: 0 0 32px; max-width: 550px; margin-left: 0; }
+    .hero-actions { justify-content: flex-start; }
+    .terminal-wrapper { margin: 0; max-width: 100%; }
+    .terminal-card { animation: floatCard 8s ease-in-out infinite; }
     
-    .module-stage {
-      order: 2;
+    .stats-grid { grid-template-columns: repeat(4, 1fr); }
+    .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    .nav-links { display: flex; }
+    .nav-cta .btn { display: inline-flex; }
+    .hamburger { display: none; }
+
+    /* 2. KURIKULUM DESKTOP (UPDATED: Menu di Tengah) */
+    .sticky-container { height: 300vh; position: relative; } 
+    
+    .sticky-content {
+      position: sticky; top: 100px;
+      height: 80vh; 
+      display: grid;
+      grid-template-columns: 1fr 1.2fr; /* Kiri: Nav, Kanan: Stage */
+      gap: 60px; /* Gap lebar agar ada ruang */
+      align-items: stretch; 
     }
 
-    /* Modul item jadi relative tumpuk ke bawah */
+    /* Desktop Nav Style: Center Vertically */
+    .module-nav {
+      flex-direction: column;
+      overflow-x: visible;
+      overflow-y: auto;
+      height: 100%; /* Full height container */
+      padding-bottom: 0;
+      padding-right: 20px; 
+      justify-content: center; /* <<-- FIX: Pusatkan Menu Secara Vertikal */
+    }
+    .module-tab {
+      border-radius: 12px; 
+      width: 100%;
+      min-width: auto;
+      flex-direction: row;
+    }
+    .m-tab-info p { display: block; } 
+
+    /* Desktop Stage Style */
+    .module-stage {
+      height: 100%;
+      min-height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; 
+      align-items: center;
+    }
+
+    /* Module Items: Absolute di atas */
     .module-item {
-      position: relative !important; 
-      opacity: 1 !important; 
-      transform: none !important;
-      margin-bottom: 32px;
+      position: absolute;
+      top: 0; left: 0; width: 100%;
+      height: 60%; 
+      transform: translateY(20px) scale(0.95);
+      margin-bottom: 0;
+      justify-content: center;
     }
-    
-    /* Hide circle visual on mobile to save space */
-    .visual-stage { display: none; }
-    .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-    .hero p { margin: 0 auto 32px; }
-    .hero-actions { justify-content: center; }
-    .terminal-wrapper { width: 100%; max-width: 600px; margin: 0 auto; }
-    .terminal-card { transform: none; animation: none; }
+    .module-item.active {
+      transform: translateY(0) scale(1);
+      z-index: 2;
+      position: absolute; 
+    }
+
+    /* Visual Stage: Posisi di bawah */
+    .visual-stage {
+      position: relative; 
+      width: 100%;
+      height: auto; 
+      min-height: 30%; 
+      margin-top: auto; 
+      order: 2; 
+      justify-content: center;
+      align-items: flex-end; 
+      padding-bottom: 20px;
+    }
+    .progress-circle { width: 220px; height: 220px; } 
+    .pc-number { font-size: 3.5rem; }
   }
-  
+
   @media (max-width: 480px) {
-    .footer-grid { grid-template-columns: 1fr; text-align: center; }
-    .socials { justify-content: center; }
+    .btn { width: 100%; }
+    .hero-actions { flex-direction: column; }
   }
 </style>
 </head>
@@ -634,8 +669,8 @@
         <div class="badge"><span class="badge-dot"></span> PENDAFTARAN DIBUKA</div>
         <h1>Kuasai Kode, <br><span class="text-gradient-primary">Bangun Masa Depan.</span></h1>
         <p>
-          Program intensif Rekayasa Perangkat Lunak berbasis industri. 
-          Transformasikan diri Anda menjadi Software Engineer siap kerja dalam 20 minggu.
+          Kelas HTML & CSS yang terstruktur untuk membangun website dari dasar hingga proyek siap portofolio.
+          Belajar langsung melalui 4 pertemuan per minggu, masing-masing 2 jam.
         </p>
         <div class="hero-actions">
           <a href="#harga" class="btn btn-primary">Lihat Program</a>
@@ -643,7 +678,7 @@
         </div>
         <div style="margin-top: 32px; font-size: 0.85rem; color: var(--text-dim); display: inline-flex; align-items: center; gap: 8px;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          Komitmen Mentor Ratio 1:6
+          4 Pertemuan × 2 Jam / Minggu
         </div>
       </div>
 
@@ -655,7 +690,7 @@
               <div class="term-dot td-2"></div>
               <div class="term-dot td-3"></div>
             </div>
-            <div style="font-family: var(--font-code); font-size: 0.8rem; color: var(--text-muted);">main.ts — VS Code</div>
+            <div style="font-family: var(--font-code); font-size: 0.8rem; color: var(--text-muted);">index.html — VS Code</div>
           </div>
           <div class="term-body" id="typewriter">
             <!-- JS Content -->
@@ -674,134 +709,134 @@
           <span class="stat-label">Alumni Lulus</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num" data-target="20">0</span>
-          <span class="stat-label">Minggu Program</span>
+          <span class="stat-num" data-target="4">0</span>
+          <span class="stat-label">Pertemuan / Minggu</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num" data-target="87">0</span>
-          <span class="stat-label">% Penyelesaian Tepat Waktu</span>
+          <span class="stat-num" data-target="2">0</span>
+          <span class="stat-label">Jam / Pertemuan</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num" data-target="6">0</span>
-          <span class="stat-label">Max Mentee/Mentor</span>
+          <span class="stat-num" data-target="12">0</span>
+          <span class="stat-label">Bulan Paket Tahunan</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Curriculum Section - DESKTOP SPLIT SCREEN LAYOUT -->
+  <!-- Curriculum Section -->
   <section id="kurikulum">
     <div class="wrap">
       <div class="section-header">
         <span class="section-tag">Kurikulum Terstruktur</span>
-        <h2 class="section-title">Jalur Pembentukan Karir</h2>
-        <p class="section-desc">Empat fase pembelajaran komprehensif yang dirancang untuk membawa Anda dari pemula hingga profesional siap produksi.</p>
+        <h2 class="section-title">Jalur Belajar HTML & CSS</h2>
+        <p class="section-desc">Empat tahap pembelajaran terstruktur yang dirancang untuk membawa Anda dari dasar HTML & CSS hingga profesional siap produksi.</p>
       </div>
     </div>
 
     <div class="sticky-container" id="scrollContainer">
       <div class="wrap sticky-content">
         
-        <!-- KOLOM KIRI: MENU NAVIGASI MODUL (Desktop Only) -->
+        <!-- KOLOM 1: NAVIGASI MODUL (Shared: Horizontal Mobile / Vertical Desktop) -->
         <div class="module-nav">
-          <div class="module-tab active" onclick="scrollToModule(0)">
+          <div class="module-tab active" onclick="selectModule(0)">
             <span class="m-tab-num">01</span>
             <div class="m-tab-info">
-              <h4>Fundamental</h4>
-              <p>Logika & Struktur Data</p>
+              <h4>HTML Dasar</h4>
+              <p>Struktur & Semantic HTML</p>
             </div>
           </div>
-          <div class="module-tab" onclick="scrollToModule(1)">
+          <div class="module-tab" onclick="selectModule(1)">
             <span class="m-tab-num">02</span>
             <div class="m-tab-info">
-              <h4>Frontend</h4>
-              <p>Antarmuka Modern</p>
+              <h4>CSS Dasar</h4>
+              <p>Styling & Box Model</p>
             </div>
           </div>
-          <div class="module-tab" onclick="scrollToModule(2)">
+          <div class="module-tab" onclick="selectModule(2)">
             <span class="m-tab-num">03</span>
             <div class="m-tab-info">
-              <h4>Backend</h4>
-              <p>Sistem & Database</p>
+              <h4>Layout & Responsive</h4>
+              <p>Flexbox, Grid & Responsive</p>
             </div>
           </div>
-          <div class="module-tab" onclick="scrollToModule(3)">
+          <div class="module-tab" onclick="selectModule(3)">
             <span class="m-tab-num">04</span>
             <div class="m-tab-info">
-              <h4>Capstone</h4>
-              <p>Proyek Produksi</p>
+              <h4>Project</h4>
+              <p>Website Siap Portofolio</p>
             </div>
           </div>
         </div>
 
-        <!-- KOLOM KANAN: DETAIL KONTEN + VISUAL -->
+        <!-- KOLOM 2: DETAIL KONTEN + VISUAL -->
         <div class="module-stage">
           
           <!-- Module 1 -->
-          <div class="module-item active" data-index="1">
+          <div class="module-item active" data-index="0">
             <div class="m-card">
               <span class="m-index">MODUL 01 — FUNDAMENTAL</span>
-              <h3 class="m-title">Logika Komputasi & Struktur Data</h3>
+              <h3 class="m-title">HTML Fundamental & Semantic</h3>
               <p class="m-desc">
-                Membangun fondasi pemikiran algoritmik yang kuat. Anda akan mempelajari efisiensi algoritma, struktur data dasar, dan penguasaan tools kolaborasi industri seperti Git & GitHub CLI.
+                Membangun fondasi website dari nol dengan struktur HTML yang rapi, semantic, dan mudah dikembangkan.
               </p>
               <div class="m-tags">
-                <span class="tag">Algoritma</span>
-                <span class="tag">Data Structures</span>
-                <span class="tag">Git Workflow</span>
+                <span class="tag">HTML5</span>
+                <span class="tag">Semantic HTML</span>
+                <span class="tag">Forms & Tables</span>
               </div>
             </div>
           </div>
           
           <!-- Module 2 -->
-          <div class="module-item" data-index="2">
+          <div class="module-item" data-index="1">
             <div class="m-card">
               <span class="m-index">MODUL 02 — FRONTEND ENGINEERING</span>
-              <h3 class="m-title">Arsitektur Antarmuka Modern</h3>
+              <h3 class="m-title">CSS Fundamental & Styling</h3>
               <p class="m-desc">
-                Mendalami pengembangan web interaktif skala besar. Fokus pada pengelolaan state (State Management), performa rendering, dan aksesibilitas menggunakan ekosistem React terkini.
+                Mempelajari cara mengubah struktur HTML menjadi tampilan yang rapi dan menarik menggunakan CSS, termasuk selector, warna, typography, spacing, dan box model.
               </p>
               <div class="m-tags">
-                <span class="tag">Modern HTML/CSS</span>
-                <span class="tag">JavaScript ES6+</span>
-                <span class="tag">React Ecosystem</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">Box Model</span>
+                <span class="tag">Typography</span>
               </div>
             </div>
           </div>
 
           <!-- Module 3 -->
-          <div class="module-item" data-index="3">
+          <div class="module-item" data-index="2">
             <div class="m-card">
               <span class="m-index">MODUL 03 — BACKEND SYSTEMS</span>
-              <h3 class="m-title">Perancangan API & Database</h3>
+              <h3 class="m-title">Layout, Flexbox & Grid</h3>
               <p class="m-desc">
-                Menguasai sisi server dengan merancang RESTful API yang scalable dan robust. Pembelajaran mencakup normalisasi database PostgreSQL dan implementasi keamanan server yang komprehensif.
+                Menyusun layout website secara profesional menggunakan Flexbox dan CSS Grid, lalu membuat tampilan yang responsif di desktop, tablet, dan mobile.
               </p>
               <div class="m-tags">
-                <span class="tag">Node.js</span>
-                <span class="tag">PostgreSQL</span>
-                <span class="tag">API Security</span>
+                <span class="tag">Flexbox</span>
+                <span class="tag">CSS Grid</span>
+                <span class="tag">Responsive</span>
               </div>
             </div>
           </div>
 
           <!-- Module 4 -->
-          <div class="module-item" data-index="4">
+          <div class="module-item" data-index="3">
             <div class="m-card">
               <span class="m-index">MODUL 04 — CAPSTONE PROJECT</span>
-              <h3 class="m-title">Deployment & Portofolio Produksi</h3>
+              <h3 class="m-title">Website Project & Portfolio</h3>
               <p class="m-desc">
-                Penerapan pengetahuan dalam membangun produk nyata. Anda akan melalui siklus hidup pengembangan perangkat lunak penuh (SDLC), code review intensif, hingga deployment ke cloud environment.
+                Menggabungkan HTML dan CSS dalam proyek website lengkap, melakukan penyempurnaan tampilan, responsive check, dan menyiapkan hasil akhir sebagai portofolio.
               </p>
               <div class="m-tags">
-                <span class="tag">CI/CD Pipeline</span>
-                <span class="tag">Cloud Deployment</span>
-                <span class="tag">Professional Portfolio</span>
+                <span class="tag">Landing Page</span>
+                <span class="tag">Responsive UI</span>
+                <span class="tag">Portfolio</span>
               </div>
             </div>
           </div>
 
-          <!-- Visual Stage (Diletakkan paling bawah di kolom kanan) -->
+          <!-- Visual Stage (Posisi diatur lewat CSS Grid/Flex) -->
           <div class="visual-stage">
             <div class="progress-circle">
               <svg class="pc-svg" viewBox="0 0 260 260">
@@ -825,23 +860,23 @@
     <div class="wrap">
       <div class="section-header">
         <span class="section-tag">Metodologi</span>
-        <h2 class="section-title">Fleksibel untuk Pekerja Profesional</h2>
+        <h2 class="section-title">Belajar 4 Pertemuan per Minggu</h2>
       </div>
       <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
         <div class="price-card" style="text-align: left;">
-          <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">SENIN — KAMIS</div>
-          <h3 style="font-size:1.2rem; margin-bottom:8px;">Sesi Live Interaktif</h3>
-          <p style="color:var(--text-muted); font-size:0.9rem;">Pertemuan intensif malam hari (19.30 - 21.30 WIB) dengan materi langsung aplikatif dan diskusi real-time bersama mentor.</p>
+          <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">4× PER MINGGU</div>
+          <h3 style="font-size:1.2rem; margin-bottom:8px;">Kelas Live 2 Jam</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Setiap minggu terdapat 4 pertemuan, masing-masing berdurasi 2 jam. Materi disampaikan secara bertahap dengan praktik coding langsung.</p>
         </div>
         <div class="price-card" style="text-align: left;">
-          <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">JUMAT</div>
-          <h3 style="font-size:1.2rem; margin-bottom:8px;">Code Review Mendalam</h3>
-          <p style="color:var(--text-muted); font-size:0.9rem;">Evaluasi baris demi baris kode Anda untuk memastikan kepatuhan terhadap standar industri (Clean Code & Best Practices).</p>
+          <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">SETIAP PERTEMUAN</div>
+          <h3 style="font-size:1.2rem; margin-bottom:8px;">Praktik & Review</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Latihan membuat struktur HTML, styling CSS, layout, responsive design, serta review kode bersama mentor.</p>
         </div>
         <div class="price-card" style="text-align: left;">
-          <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">SABTU</div>
-          <h3 style="font-size:1.2rem; margin-bottom:8px;">Laboratorium Proyek</h3>
-          <p style="color:var(--text-muted); font-size:0.9rem;">Sesi kolaborasi tim untuk memecahkan masalah teknis nyata dengan pendampingan mentor dalam simulasi lingkungan kerja.</p>
+          <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">SETIAP MINGGU</div>
+          <h3 style="font-size:1.2rem; margin-bottom:8px;">Build Project</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Waktu untuk menerapkan materi ke mini project hingga website lengkap yang dapat digunakan sebagai portofolio.</p>
         </div>
       </div>
     </div>
@@ -858,13 +893,13 @@
         <div class="mentor-card">
           <div class="m-avatar" style="background: linear-gradient(135deg, #FF4E54, #ff9a9e);">YP</div>
           <div class="m-name">Muhammad Yusuf</div>
-          <div class="m-role">Fullstack Engineer</div>
+          <div class="m-role">HTML & CSS Instructor</div>
           <p style="color:var(--text-muted); font-size:0.9rem;">Spesialis integrasi UI/UX dan arsitektur frontend dengan pengalaman lebih dari 3 tahun di industri teknologi.</p>
         </div>
         <div class="mentor-card">
           <div class="m-avatar" style="background: linear-gradient(135deg, #00F0FF, #0077ff);">WW</div>
           <div class="m-name">William Wijaya</div>
-          <div class="m-role">Backend Specialist</div>
+          <div class="m-role">Web Development Instructor</div>
           <p style="color:var(--text-muted); font-size:0.9rem;">Ahli dalam desain sistem backend, optimasi performa database tingkat lanjut, dan arsitektur microservices.</p>
         </div>
       </div>
@@ -895,7 +930,7 @@
             <div class="m-avatar" style="width:48px;height:48px;margin:0;font-size:1rem;">AF</div>
             <div>
               <div style="font-weight:600;">Ahmad Fadillah</div>
-              <div style="font-size:0.85rem; color:var(--text-muted);">Backend Developer</div>
+              <div style="font-size:0.85rem; color:var(--text-muted);">Web Developer</div>
             </div>
           </div>
         </div>
@@ -913,43 +948,43 @@
       <div class="pricing-grid">
         <!-- Basic -->
         <div class="price-card">
-          <div style="font-size:0.85rem; font-weight:600; color:var(--text-dim); text-transform:uppercase;">Self Paced</div>
+          <div style="font-size:0.85rem; font-weight:600; color:var(--text-dim); text-transform:uppercase;">Weekly Class</div>
           <div class="price-amt">Rp 150rb<span>/minggu</span></div>
-          <p style="color:var(--text-muted); font-size:0.9rem;">Otonomi penuh belajar dengan akses materi terstruktur.</p>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Belajar HTML & CSS dengan materi terstruktur selama 1 minggu.</p>
           <ul class="feat-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Akses materi seumur hidup</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Akses materi HTML & CSS</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Akses komunitas diskusi</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 1x Code Review per Modul</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 4 Pertemuan × 2 Jam</li>
           </ul>
-          <a href="#" class="btn btn-secondary btn-wa" data-pkg="Self Paced (Rp150rb/minggu)">Pilih Paket</a>
+          <a href="#" class="btn btn-secondary btn-wa" data-pkg="Weekly Class (Rp150rb/minggu)">Pilih Paket</a>
         </div>
 
         <!-- Featured -->
         <div class="price-card featured">
           <div class="popular-badge">REKOMENDASI</div>
-          <div style="font-size:0.85rem; font-weight:600; color:var(--primary); text-transform:uppercase;">Intensif</div>
+          <div style="font-size:0.85rem; font-weight:600; color:var(--primary); text-transform:uppercase;">Monthly Class</div>
           <div class="price-amt">Rp 650rb<span>/bulan</span></div>
-          <p style="color:var(--text-muted); font-size:0.9rem;">Pendampingan penuh dengan jadwal kelas terjadwal.</p>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Program HTML & CSS selama 1 bulan dengan 4 pertemuan per minggu.</p>
           <ul class="feat-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Live Class 4x per Minggu</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Code Review Mingguan</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Mentoring 1-on-1 Dwi Mingguan</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Proyek Capstone Terpandu</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Live Class 4x per Minggu × 2 Jam</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Praktik & Review Mingguan</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Pendampingan Mentor</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Proyek Website Terpandu</li>
           </ul>
-          <a href="#" class="btn btn-primary btn-wa" data-pkg="Intensif (Rp650rb/bulan)">Daftar Sekarang</a>
+          <a href="#" class="btn btn-primary btn-wa" data-pkg="Monthly Class (Rp650rb/bulan)">Daftar Sekarang</a>
         </div>
 
         <!-- Premium -->
         <div class="price-card">
-          <div style="font-size:0.85rem; font-weight:600; color:var(--text-dim); text-transform:uppercase;">Private</div>
+          <div style="font-size:0.85rem; font-weight:600; color:var(--text-dim); text-transform:uppercase;">Annual Class</div>
           <div class="price-amt">Rp 1.2jt<span>/tahun</span></div>
-          <p style="color:var(--text-muted); font-size:0.9rem;">Akses prioritas untuk percepatan karir maksimal.</p>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Program HTML & CSS selama 12 bulan dengan akses pembelajaran berkelanjutan.</p>
           <ul class="feat-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Semua Fitur Paket Intensif</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Mentor Pribadi (Fixed)</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Simulasi Interview Teknis</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Semua Fitur Paket Monthly Class</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Pendampingan Mentor</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Pengembangan Portfolio</li>
           </ul>
-          <a href="#" class="btn btn-secondary btn-wa" data-pkg="Private (Rp1.2jt/tahun)">Hubungi Kami</a>
+          <a href="#" class="btn btn-secondary btn-wa" data-pkg="Annual Class (Rp1.2jt/tahun)">Hubungi Kami</a>
         </div>
       </div>
     </div>
@@ -964,16 +999,16 @@
       
       <div class="faq-list">
         <div class="faq-item">
-          <button class="faq-q">Apakah diperlukan pengalaman teknis sebelumnya? <span class="faq-icon"></span></button>
-          <div class="faq-a"><p style="padding: 0 24px 20px; font-size:0.95rem;">Tidak wajib. Modul pertama didesain khusus untuk pemula (absolute beginner). Fokus kami adalah membangun logika dan dasar pemrograman dari nol.</p></div>
+          <button class="faq-q">Apakah harus sudah bisa coding sebelumnya? <span class="faq-icon"></span></button>
+          <div class="faq-a"><p style="padding: 0 24px 20px; font-size:0.95rem;">Tidak wajib. Kelas dimulai dari dasar HTML dan CSS sehingga cocok untuk pemula yang belum pernah membuat website.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q">Bagaimana skema pembelajarannya bagi pekerja full-time? <span class="faq-icon"></span></button>
-          <div class="faq-a"><p style="padding: 0 24px 20px; font-size:0.95rem;">Kelas diselenggarakan malam hari dan tugas dirancang agar dapat diselesaikan di akhir pekan, memberikan fleksibilitas bagi Anda yang tetap bekerja.</p></div>
+          <button class="faq-q">Bagaimana jadwal kelasnya? <span class="faq-icon"></span></button>
+          <div class="faq-a"><p style="padding: 0 24px 20px; font-size:0.95rem;">Dalam 1 minggu terdapat 4 pertemuan, masing-masing berdurasi 2 jam. Jadwal detail dapat disesuaikan dengan paket dan kelas yang tersedia.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q">Apakah program ini memberikan jaminan penempatan kerja? <span class="faq-icon"></span></button>
-          <div class="faq-a"><p style="padding: 0 24px 20px; font-size:0.95rem;">Kami menekankan pada pembentukan kompetensi. Kami menjamin portofolio berkualitas tinggi, kesiapan technical interview, dan jaringan mentor untuk mendukung proses rekrutmen Anda.</p></div>
+          <button class="faq-q">Apa yang akan dipelajari di kelas? <span class="faq-icon"></span></button>
+          <div class="faq-a"><p style="padding: 0 24px 20px; font-size:0.95rem;">Materi berfokus pada HTML5, semantic HTML, CSS3, box model, Flexbox, CSS Grid, responsive design, styling, dan pembuatan website sebagai portofolio.</p></div>
         </div>
       </div>
     </div>
@@ -982,9 +1017,9 @@
   <!-- CTA Final -->
   <section style="text-align: center; padding: 100px 0;">
     <div class="wrap">
-      <h2 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 20px;">Mulai Perjalanan Profesional Anda</h2>
+      <h2 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 20px;">Mulai Belajar HTML & CSS</h2>
       <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-        Bergabunglah dengan angkatan berikutnya. Kami membatasi jumlah peserta untuk memastikan kualitas bimbingan yang personal.
+        Mulai dari dasar HTML dan CSS, praktik setiap minggu, dan bangun website yang bisa menjadi bagian dari portofolio Anda.
       </p>
       <a href="#harga" class="btn btn-primary" style="padding: 16px 40px; width: 100%; max-width: 300px;">Daftar Sekarang</a>
     </div>
@@ -999,7 +1034,7 @@
           <span>Ngoding</span><span class="highlight">Bareng</span>
         </a>
         <p style="line-height: 1.7; color: var(--text-muted); max-width: 300px;">
-          Platform pendidikan teknologi terdepan dengan kurikulum berbasis standar industri global, mencetak talenta digital siap kerja.
+          Platform belajar coding yang berfokus pada HTML & CSS, dengan pembelajaran terstruktur, praktik langsung, dan proyek website.
         </p>
         <div class="socials">
           <a href="#">IG</a>
@@ -1027,7 +1062,7 @@
         <h4 style="color:#fff; margin-bottom:20px;">Hubungi Kami</h4>
         <ul class="footer-links">
           <li><a href="mailto:halo@ngodingbareng.com">halo@ngodingbareng.com</a></li>
-          <li><a href="tel:+62812345678">+62 812-3456-7890</a></li>
+          <li><a href="tel:+62812345678">+62 812-3456-7890</li>
           <li>Palembang, Indonesia</li>
         </ul>
       </div>
@@ -1059,15 +1094,15 @@
 
   // --- TYPEWRITER EFFECT ---
   const codeLines = [
-    { text: "import { SoftwareEngineer } from 'ngoding-bareng';", delay: 100 },
+    { text: "import { WebDeveloper } from 'ngoding-bareng';", delay: 100 },
     { text: "", delay: 200 },
-    { text: "const student = new SoftwareEngineer({", delay: 50 },
-    { text: "  skills: ['Fullstack', 'System Design'],", delay: 150 },
-    { text: "  status: 'Ready for Industry',", delay: 150 },
-    { text: "  commitment: 'High Performance'", delay: 150 },
+    { text: "const student = new WebDeveloper({", delay: 50 },
+    { text: "  skills: ['HTML5', 'CSS3', 'Responsive Design'],", delay: 150 },
+    { text: "  status: 'Ready to Build Websites',", delay: 150 },
+    { text: "  commitment: 'Consistent Practice'", delay: 150 },
     { text: "});", delay: 50 },
     { text: "", delay: 200 },
-    { text: "student.deployCareer();", delay: 100 }
+    { text: "student.buildWebsite();", delay: 100 }
   ];
 
   const typeContainer = document.getElementById('typewriter');
@@ -1097,7 +1132,7 @@
     let html = lineData.text
       .replace(/import|from|const|new|this|return/g, '<span class="kwd">$&</span>')
       .replace(/'.*?'/g, '<span class="str">$&</span>')
-      .replace(/SoftwareEngineer|deployCareer/g, '<span class="func">$&</span>');
+       .replace(/WebDeveloper|buildWebsite/g, '<span class="func">$&</span>');
 
     if (lineData.text.trim() !== '') {
        if (lineIndex === codeLines.length - 1) {
@@ -1158,119 +1193,145 @@
     }, 30);
   }
 
-  // --- DESKTOP SPLIT SCREEN SCROLL LOGIC ---
+  // --- KURIKULUM INTERACTIVE LOGIC (FULL FIX) ---
   const isDesktop = window.matchMedia("(min-width: 981px)");
   
-  function updateScrollLogic() {
-    const stickyContainer = document.getElementById('scrollContainer');
-    
-    if (isDesktop.matches) {
-      stickyContainer.style.height = '300vh';
-      document.querySelector('.sticky-content').style.position = 'sticky';
-      document.querySelector('.sticky-content').style.top = '100px';
-      document.querySelector('.sticky-content').style.height = '80vh';
-    } else {
-      stickyContainer.style.height = 'auto';
-      const stickyContent = document.querySelector('.sticky-content');
-      stickyContent.style.position = 'relative';
-      stickyContent.style.top = 'auto';
-      stickyContent.style.height = 'auto';
-    }
-  }
-  
-  // Fungsi klik menu di kiri untuk scroll ke modul tertentu
-  function scrollToModule(index) {
-    if (!isDesktop.matches) return; // Hanya berfungsi di desktop
-    const modules = document.querySelectorAll('.module-item');
-    const containerHeight = 300; // vh
-    const windowHeight = window.innerHeight;
-    const scrollTarget = (index * ((containerHeight - (100/windowHeight*100)) / modules.length)) * window.innerHeight; 
-    // Hitung kasar scroll position berdasarkan index
-    window.scrollTo({
-      top: document.getElementById('scrollContainer').getBoundingClientRect().top + window.scrollY + (index * 500), 
-      behavior: 'smooth'
-    });
-  }
-
-  updateScrollLogic();
-  window.addEventListener('resize', updateScrollLogic);
-
-  window.addEventListener('scroll', () => {
-    if (!isDesktop.matches) return;
-    
-    const stickyContainer = document.getElementById('scrollContainer');
-    const modules = document.querySelectorAll('.module-item');
+  // Fungsi utama untuk ganti modul
+  function selectModule(index) {
     const tabs = document.querySelectorAll('.module-tab');
+    const modules = document.querySelectorAll('.module-item');
+    
+    // Update UI Tab
+    tabs.forEach(t => t.classList.remove('active'));
+    if(tabs[index]) tabs[index].classList.add('active');
+    
+    // Update UI Module Content
+    modules.forEach(m => m.classList.remove('active'));
+    if(modules[index]) modules[index].classList.add('active');
+    
+    // Update Visual Circle
+    updateCircle(index);
+
+    // Sync Layout Mobile vs Desktop
+    updateLayoutMode(index);
+  }
+
+  function updateCircle(index) {
     const progressRing = document.getElementById('progressRing');
     const moduleNumber = document.getElementById('moduleNumber');
-    
-    const rect = stickyContainer.getBoundingClientRect();
-    const containerHeight = stickyContainer.offsetHeight;
-    const windowHeight = window.innerHeight;
-    
-    let progress = -rect.top / (containerHeight - windowHeight);
-    progress = Math.max(0, Math.min(1, progress));
-    
-    const circumference = 2 * Math.PI * 120; 
-    const offset = circumference - (progress * circumference);
-    progressRing.style.strokeDashoffset = offset;
-    
-    const activeIdx = Math.min(Math.floor(progress * modules.length) + 1, 4);
-    moduleNumber.innerText = '0' + activeIdx;
-    
-    // Update Modul Item (Kanan)
-    modules.forEach((mod, idx) => {
-      if ((idx + 1) === activeIdx) {
-        mod.classList.add('active');
-        mod.style.position = 'relative';
-      } else {
-        mod.classList.remove('active');
-        mod.style.position = 'absolute';
-      }
-    });
+    const total = 4;
+    const percent = ((index + 1) / total) * 880; 
+    progressRing.style.strokeDashoffset = 880 - percent;
+    moduleNumber.innerText = (index + 1).toString().padStart(2, '0');
+  }
 
-    // Update Tab Menu (Kiri)
-    tabs.forEach((tab, idx) => {
-      if ((idx + 1) === activeIdx) tab.classList.add('active');
-      else tab.classList.remove('active');
-    });
+  // Fungsi ini mengatur posisi elemen (Absolute vs Relative) berdasarkan ukuran layar
+  // dan memastikan modul yang tidak aktif di-hide dengan benar di Mobile
+  function updateLayoutMode(activeIndexOverride = null) {
+    const container = document.getElementById('scrollContainer');
+    const content = document.querySelector('.sticky-content');
+    const stage = document.querySelector('.module-stage');
+    const items = document.querySelectorAll('.module-item');
+    const visual = document.querySelector('.visual-stage');
+
+    if (isDesktop.matches) {
+      // Desktop Mode
+      container.style.height = '300vh';
+      content.style.position = 'sticky';
+      content.style.top = '100px';
+      content.style.height = '80vh';
+      
+      items.forEach(item => {
+        item.style.position = 'absolute';
+        item.style.top = '0';
+        item.style.left = '0';
+        item.style.transform = 'translateY(20px) scale(0.95)';
+        item.style.display = 'flex'; 
+        item.style.flexDirection = 'column';
+        item.style.height = '60%';
+      });
+      
+      visual.style.display = 'flex';
+      visual.style.position = 'relative'; 
+      visual.style.marginTop = 'auto'; 
+
+    } else {
+      // Mobile Mode
+      container.style.height = 'auto';
+      content.style.position = 'relative';
+      content.style.top = 'auto';
+      content.style.height = 'auto';
+      
+      items.forEach((item, idx) => {
+        item.style.position = 'relative';
+        item.style.top = 'auto';
+        item.style.left = 'auto';
+        item.style.transform = 'none';
+        item.style.height = 'auto';
+        
+        const isActive = idx === activeIndexOverride || item.classList.contains('active');
+        
+        if (isActive) {
+           item.style.display = 'flex';
+        } else {
+           item.style.display = 'none';
+        }
+      });
+      
+      visual.style.display = 'flex';
+      visual.style.position = 'relative';
+      visual.style.order = 2; 
+    }
+  }
+
+  // Desktop Sticky Scroll Logic
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 50) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+
+    if (isDesktop.matches) {
+      const container = document.getElementById('scrollContainer');
+      const rect = container.getBoundingClientRect();
+      const viewPortHeight = window.innerHeight;
+      
+      const startOffset = 100; // top sticky
+      const effectiveHeight = container.offsetHeight - viewPortHeight;
+      
+      let scrollProgress = (startOffset - rect.top) / effectiveHeight;
+      scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+      
+      const totalModules = 4;
+      let activeIndex = Math.floor(scrollProgress * totalModules);
+      
+      if (activeIndex < 0) activeIndex = 0;
+      if (activeIndex >= totalModules) activeIndex = totalModules - 1;
+      
+      const currentActiveTab = document.querySelector('.module-tab.active');
+      const targetTab = document.querySelectorAll('.module-tab')[activeIndex];
+      
+      if (currentActiveTab !== targetTab) {
+        selectModule(activeIndex);
+      }
+    }
   });
 
-  // --- FAQ TOGGLE ---
+  // Init: Panggil layout mode dengan index 0 agar Modul 1 muncul saat load di Mobile
+  updateLayoutMode(0);
+  
+  // Resize handler
+  window.addEventListener('resize', () => {
+     const activeIdx = Array.from(document.querySelectorAll('.module-item')).findIndex(i => i.classList.contains('active'));
+     updateLayoutMode(activeIdx);
+  });
+
+  // FAQ Toggle
   document.querySelectorAll('.faq-q').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.parentElement;
       item.classList.toggle('open');
     });
   });
-
-  // --- WHATSAPP LINK ---
-  document.querySelectorAll('.btn-wa').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const pkg = btn.dataset.pkg;
-      const msg = `Halo, saya tertarik dengan program Ngoding Bareng. Paket: ${pkg}. Mohon info lebih lanjut.`;
-      window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-  });
-
-  // --- NAVBAR SCROLL ---
-  window.addEventListener('scroll', () => {
-    const nav = document.getElementById('navbar');
-    if (window.scrollY > 30) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
-  });
-
-  // --- TESTIMONIAL SLIDER ---
-  let slideIdx = 0;
-  const slides = document.querySelectorAll('.testi-slide');
-  setInterval(() => {
-    if(slides.length > 0) {
-      slides[slideIdx].classList.remove('active');
-      slideIdx = (slideIdx + 1) % slides.length;
-      slides[slideIdx].classList.add('active');
-    }
-  }, 5000);
 
 </script>
 </body>
